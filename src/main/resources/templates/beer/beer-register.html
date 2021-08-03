@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="https://www.thymeleaf.org"
+	  xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/layout}">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+	<title>::Brewer</title>
+
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/algaworks.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/application.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/UIKit/upload.min.css}">
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<section class="aw-layout-content  js-content" layout:fragment="content">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-10">
+						<h1>Cadastro de cerveja</h1>
+					</div>
+
+					<div class="col-sm-2">
+						<div class="aw-page-header-controls">
+							<div class="aw-page-header-controls">
+								<a class="btn btn-default" th:href="@{/beer}">
+									<i class="glyphicon glyphicon-plus-sign"></i>
+									<span class="hidden-xs hidden-sm">Pesquisar</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+
+			<div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasErrors('${cerveja.*}')}">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<div th:each="detailedError :  ${#fields.detailedErrors('${cerveja.*}')}">
+					<i class="fa  fa-exclamation-circle"></i>
+					<span>[[${detailedError.message}]]</span>
+				</div>
+			</div>
+
+			<div class="alert  alert-success  alert-dismissible" role="alert" th:if="${msg != null}">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<i class="fa  fa-exclamation-circle"></i>
+				<span th:text="${msg}"></span>
+			</div>
+
+			<form method="POST"  class="form-vertical  js-form-loading js-form-decimal-container" th:action="@{/beer/new}" th:object="${cerveja}">
+				<div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(msg)}">
+					<button type="button" class="close" data-dismiss="alert" ><span aria-hidden="true">&times;</span></button>
+					<span th:text="${msg}"></span>
+				</div>
+
+				<div class="row">
+					<div class="form-group col-sm-2 app-required-field" th:classappend="${#fields.hasErrors('sku')} ? 'has-error'">
+						<label for="sku" class="control-label">SKU</label>
+						<input id="sku" type="text" class="form-control" th:field="*{sku}"/>
+					</div>
+
+					<div class="form-group col-sm-10 app-required-field" th:classappend="${#fields.hasErrors('nome')} ? 'has-error'">
+						<label for="nome" class="control-label">Nome</label>
+						<input id="nome" type="text" class="form-control" th:field="*{nome}"/>
+					</div>
+				</div>
+
+				<div class="form-group" th:classappend="${#fields.hasErrors('descricao')} ? 'has-error'">
+					<label for="descricao" class="control-label">Descrição</label>
+					<textarea id="descricao" rows="3" class="form-control" th:field="*{descricao}"></textarea>
+				</div>
+
+				<div class="row">
+					<div class="form-group col-sm-3 app-required-field" th:classappend="${#fields.hasErrors('estilo')} ? 'has-error'">
+						<label for="estilo" class="control-label">Estilo</label>
+						<div class="app-form-composition">
+							<select id="estilo" class="form-control" th:field="*{estilo}">
+								<option value="" disabled selected>Selecione...</option>
+								<option th:each="estilo : ${estilos}" th:value="${estilo.codigo}" th:text="${estilo.nome}"></option>
+							</select>
+							<a href="#" class="app-form-composition__icon" data-toggle="modal" data-target="#modalCadastroRapidoEstilo">
+								<i class="glyphicon glyphicon-plus-sign app-icon-large"></i>
+							</a>
+						</div>
+					</div>
+
+					<div class="form-group col-sm-3 app-required-field" th:classappend="${#fields.hasErrors('sabor')} ? 'has-error'">
+						<label for="sabor" class="control-label">Sabor</label>
+						<select id="sabor" class="form-control" th:field="*{sabor}">
+							<option value="" disabled selected>Selecione...</option>
+							<option th:each="sabor : ${sabores}" th:value="${sabor}" th:text="${sabor.descricao}"></option>
+						</select>
+					</div>
+
+					<div class="form-group col-sm-3 app-required-field"  th:classappend="${#fields.hasErrors('teorAlcoolico')} ? 'has-error'">
+						<label for="teorAlcoolico" class="control-label">Teor Alcoólico</label>
+						<div class="input-group">
+							<input id="teorAlcoolico" class="form-control js-decimal-mask" th:field="*{teorAlcoolico}"/>
+							<div class="input-group-addon">%</div>
+						</div>
+					</div>
+
+					<div class="form-group col-lg-3 col-sm-6 app-required-field"  th:classappend="${#fields.hasErrors('origem')} ? 'has-error'">
+						<label class="control-label">Origem</label>
+						<div>
+							<div class="radio radio-inline" th:each="origem : ${origens}">
+								<input type="radio" th:id="|id_${origem}|" th:value="${origem}" th:field="*{origem}">
+								<label th:for="|id_${origem}|" th:text="${origem.descricao}"></label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-sm-3 app-required-field" th:classappend="${#fields.hasErrors('valor')} ? 'has-error'">
+						<label for="valor" class="control-label">Valor</label>
+						<div class="input-group">
+							<div class="input-group-addon">R$</div>
+							<input id="valor" class="form-control js-decimal-mask" th:field="*{valor}"/>
+						</div>
+					</div>
+
+					<div class="form-group col-sm-3 app-required-field" th:classappend="${#fields.hasErrors('comissao')} ? 'has-error'">
+						<label for="comissao" class="control-label">Comissao</label>
+						<div class="input-group">
+							<input id="comissao" class="form-control js-decimal-mask" th:field="*{comissao}"/>
+							<div class="input-group-addon">%</div>
+						</div>
+					</div>
+					<div class="form-group col-sm-3 app-required-field" th:classappend="${#fields.hasErrors('quantidadeEstoque')} ? 'has-error'">
+						<label for="estoque" class="control-label">Estoque</label>
+						<input id="estoque" type="text" class="form-control js-integer-mask" th:field="*{quantidadeEstoque}"/>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="beerPhotoContainer form-group col-sm-12">
+						<input type="hidden" th:field="*{nomeFoto}">
+						<input type="hidden" th:field="*{contentType}">
+
+						<label class="control-label">Foto</label>
+
+						<div id="upload-drop" class="app-upload">
+							<i class="glyphicon glyphicon-cloud-upload"></i>
+							<span>Arraste a foto aqui ou</span>
+							<a class="app-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpeg,.jpeg,.png"></a>
+						</div>
+
+						<!--
+						<div class="row">
+							<div class="col-md-4"></div>
+							<div class="col-md-4 text-center">
+								<a href="#" class="thumbnail">
+									<img th:src="@{/fotos/temp/}">
+								</a>
+
+								<button type="button" class="btn btn-link"><span class="glyphicon glyphicon-remove"></span></button>
+							</div>
+						</div>
+						-->
+					</div>
+				</div>
+
+				<div class="form-group">
+					<button class="btn  btn-primary js-btn-save" type="submit">Salvar</button>
+					<a href="#" class="btn  btn-link  aw-btn-link-danger" >Excluir este produto</a>
+				</div>
+
+			</form>
+		</div>
+
+		<div class="modal fade" id="modalCadastroRapidoEstilo" tabindex="-1" role="dialog">
+			<div class="modal-dialog  modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">Cadastro de estilo</h4>
+					</div>
+
+					<div class="modal-body">
+						<div class="alert  alert-danger  alert-dismissible hidden js-modal-error-message" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<div>
+								<i class="fa  fa-exclamation-circle"></i>
+								<span class="message-content"></span>
+							</div>
+						</div>
+
+						<form class="form-horizontal"  th:action="@{/style/save}">
+							<div class="form-group">
+								<label class="col-sm-2  control-label" for="nomeEstilo">Nome</label>
+								<div class="col-sm-10">
+									<input id="nomeEstilo" type="text" class="form-control" autofocus>
+								</div>
+							</div>
+						</form>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary js-save-style-btn">Salvar</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+	<th:block layout:fragment="js-import-extras">
+		<script th:src="@{/assets/js/saveStyle.js}"></script>
+		<script th:src="@{/assets/js/vendors/UIKit/uikit.min.js}"></script>
+		<script th:src="@{/assets/js/vendors/UIKit/upload.min.js}"></script>
+	</th:block>
+</body>
+</html>

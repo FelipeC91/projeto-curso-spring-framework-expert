@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>::Brewer</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/Bootstrap/bootstrap-switch.min.css}"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <section class="aw-layout-content  js-content" layout:fragment="content">
+        <div class="page-header">
+            <div class="container-fluid">
+                <h1>Cadastro de usuário</h1>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+
+            <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasErrors('${usuario.*}')}">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div th:each="detailedError :  ${#fields.detailedErrors('${usuario.*}')}">
+                    <i class="fa  fa-exclamation-circle"></i>
+                    <span>[[${detailedError.message}]]</span>
+                </div>
+            </div>
+
+            <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${msg != null}">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <i class="fa  fa-exclamation-circle"></i>
+                <span th:text="${msg}"></span>
+            </div>
+
+
+            <form method="POST" class="form-vertical  js-form-loading" th:action="@{/user/new}" th:object="${usuario}">
+                <div class="row">
+                    <div class="form-group col-sm-12"  th:classappend="${#fields.hasErrors('nome')} ? 'has-error'">
+                        <label for="nome">Nome</label>
+                        <input id="nome" type="text" class="form-control" th:field="*{nome}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6"  th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
+                        <label for="email">E-mail</label>
+                        <input id="email" type="text" autocomplete="off" class="form-control" th:field="*{email}"/>
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="dataNascimento">Data de Nascimento</label>
+                        <input id="dataNascimento" type="date" class="form-control js-date" style="line-height: normal" th:field="*{dataNascimento}" autocomplete="off"
+                            date-provide="datepicker"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-3"   th:classappend="${#fields.hasErrors('senha')} ? 'has-error'">
+                        <label for="senha">Senha</label>
+                        <input id="senha" type="password" autocomplete="off" class="form-control" th:field="*{senha}"/>
+                    </div>
+
+                    <div class="form-group col-sm-3"  th:classappend="${#fields.hasErrors('confirmacaoSenha')} ? 'has-error'">
+                        <label for="confirmacaoSenha">Confirmação de senha</label>
+                        <input id="confirmacaoSenha" type="password" class="form-control" th:field="*{confirmacaoSenha}" th:classappend="${#fields.hasErrors('confirmacaoSenha')} ? 'has-error'"/>
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label class="control-label">Status</label>
+                        <div>
+                            <input type="checkbox" class="js-status" data-size="small" data-off-color="danger"
+                                   data-on-text="Ativo" data-off-text="Inativo" th:field="*{ativo}"/>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6"   th:classappend="${#fields.hasErrors('grupos')} ? 'has-error'">
+                        <label>Grupos</label>
+                        <div>
+                            <th:block th:each="grupo : ${grupos}">
+                                <div class="checkbox checkbox-inline">
+                                    <input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}">
+                                    <label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}"></label>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn  btn-primary" type="submit">Salvar</button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+    <th:block layout:fragment="js-import-extras">
+        <script th:src="@{/assets/js/vendors/bootstrap/bootstrap-switch.min.js}"></script>
+    </th:block>
+</body>
+</html>

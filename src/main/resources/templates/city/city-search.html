@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/layout}">
+<head>
+    <title>::Brewer - Pesquisa de cidades</title>
+</head>
+<body>
+
+<section class="aw-layout-content  js-content" layout:fragment="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-10">
+                    <h1>Pesuisa de cidades</h1>
+                </div>
+
+                <div class="col-sm-2" sec:authorize-url="/city/new">
+                    <div class="aw-page-header-controls">
+                        <div class="aw-page-header-controls">
+                            <a class="btn btn-default" th:href="@{/city/new}">
+                                <i class="glyphicon glyphicon-plus-sign"></i>
+                                <span class="hidden-xs hidden-sm">Nova cerveja</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <form method="GET" class="js-form-decimal-container" action="/city/search" th:object="${citySearchFilter}">
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label for="cidadeEstado">Estado</label>
+                    <select id="cidadeEstado" class="form-control" th:field="*{estado}">
+                        <option value="0" disabled selected>Selecione...</option>
+                        <option th:each="estado : ${estados}" th:value="${estado.codigo}" th:text="${estado.nome}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-8">
+                    <label for="cidadeNome">Nome</label>
+                    <input id="cidadeNome" type="text" class="form-control" th:field="*{nome}"/>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary"> Pesquisar</button>
+
+        </form>
+
+        <div class="table-responsive bw-tabela-simples">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="table-cervejas-col-nome text-center">
+                            <th:block th:replace="layout/fragments/ordered-table :: ordered-table(${wrapperPage}, 'nome', 'Nome')"></th:block>
+                        </th>
+
+                        <th class="table-cervejas-col-sku  text-center">
+                            <th:block th:replace="layout/fragments/ordered-table :: ordered-table(${wrapperPage}, 'estado', 'Estado')"></th:block>
+                        </th>
+
+                        <th class="table-cervejas-col-acoes text-right" sec:authorize="hasAuthority('CADASTRAR_CIDADE')"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="cidade : ${wrapperPage.page.content}">
+                    <td class="text-center" th:text="${cidade.nome}"></td>
+
+                    <td class="text-center" th:text="${cidade.estado.nome}"></td>
+
+                    <td class="text-center"  sec:authorize="hasAuthority('CADASTRAR_CIDADE')">
+                        <a class="btn btn-link btn-xs" title="Editar">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+
+                        <a class="btn btn-link btn-xs" title="Excluir">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <tr th:if="${wrapperPage.page.content.isEmpty()}">Não há itens a serem carregados</tr>
+        </div>
+        <div class="col-sm-12 text-center"  th:if="${not wrapperPage.page.content.isEmpty()}">
+            <ul class="pagination pagination-sm" th:with="curretPage=${wrapperPage.getPage().number}">
+
+                <li th:classappend="${wrapperPage.page.isFirst()} ? disabled">
+                    <a th:href="${wrapperPage.urlResolverTo(curretPage - 1)}" th:remove="${wrapperPage.page.isFirst()} ? tag">
+                        <span>&laquo;</span>
+                    </a>
+                </li>
+
+                <th:block th:each="p : ${#numbers.sequence(1, wrapperPage.page.totalPages)}" th:with="pageNumber=${p - 1}">
+                    <li th:classappend="${pageNumber == curretPage} ? active">
+                        <a th:href="${wrapperPage.urlResolverTo(pageNumber)}">[[${p}]]</a>
+                    </li>
+                </th:block>
+                <!--
+                <th:block th:if="${wrapperPage.page.totalPages} == 1">
+                    <li>
+                        <a th:href="${wrapperPage.urlResolverTo(1)}">2</a>
+                    </li>
+                </th:block>
+                -->
+
+                <li th:classappend="${wrapperPage.page.isLast()} ? disable">
+                    <a th:href="${wrapperPage.urlResolverTo(curretPage + 1)}" th:remove="${wrapperPage.page.isLast()} ? tag">
+                        <span>&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>
+<th:block layout:fragment="js-import-extras">
+    <script th:src="@{/assets/js/saveStyle.js}"></script>
+    <script th:src="@{/assets/js/vendors/UIKit/uikit.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/UIKit/upload.min.js}"></script>
+</th:block>
+
+</body>
+</html>

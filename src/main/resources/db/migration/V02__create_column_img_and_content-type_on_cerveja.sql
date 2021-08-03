@@ -1,0 +1,3 @@
+ALTER TABLE cerveja
+    ADD COLUMN img VARCHAR(100),
+    ADD COLUMN content_type VARCHAR(100);

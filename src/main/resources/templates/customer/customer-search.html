@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <title>::Brewer - Pesquisa de clientes</title>
+</head>
+<body>
+
+<section class="aw-layout-content  js-content" layout:fragment="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-10">
+                    <h1>Pesuisa de clientes</h1>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="aw-page-header-controls">
+                        <div class="aw-page-header-controls">
+                            <a class="btn btn-default" th:href="@{/customer/register}">
+                                <i class="glyphicon glyphicon-plus-sign"></i>
+                                <span class="hidden-xs hidden-sm">Novo cliente</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <form method="GET" class="js-form-decimal-container" th:object="${customerFilter}">
+            <div class="row">
+                <div class="form-group col-sm-8 app-required-field" >
+                    <label for="sku" class="control-label">Nome</label>
+                    <input id="sku" type="text" class="form-control" th:field="*{nome}"/>
+                </div>
+
+                <div class="form-group col-sm-4 app-required-field">
+                    <label for="nome" class="control-label">CPF/CNPJ</label>
+                    <input id="nome" type="text" class="form-control" th:field="*{cpfCnpj}"/>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary"> Pesquisar</button>
+
+        </form>
+
+        <div class="table-responsive bw-tabela-simples">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="table-cervejas-col-nome">
+                            <th:block th:replace="layout/fragments/ordered-table :: ordered-table(${wrapperPage}, 'nome', 'Nome')"></th:block>
+                        </th>
+
+                        <th class="table-cervejas-col-estilo">
+                            <th:block th:replace="layout/fragments/ordered-table :: ordered-table(${wrapperPage}, 'tipoCliente', 'Tipo de Cliente')"></th:block>
+                        </th>
+
+                        <th class="table-cervejas-col-origem">CPF/CNPJ</th>
+
+                        <th class="table-cervejas-col-origem">Telefone</th>
+
+                        <th class="table-cervejas-col-origem">Cidade/Estado</th>
+
+                        <th class="table-cervejas-col-acoes"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="cliente : ${wrapperPage.page.content}">
+                    <td class="text-center" th:text="${cliente.nome}"></td>
+
+                    <td class="text-center" th:text="${cliente.tipoCliente.description}"></td>
+
+                    <td th:text="${cliente.cpfCnpj}"></td>
+
+                    <td class="text-left" th:text="${cliente.telefone}"></td>
+
+                    <td class="text-left" th:text="${cliente.endereco.FormattedCidadeAndEstadoUf}"></td>
+
+                    <td class="text-center">
+                        <a class="btn btn-link btn-xs" title="Editar">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+
+                        <a class="btn btn-link btn-xs" title="Excluir">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <tr th:if="${wrapperPage.page.content.isEmpty()}">Não há itens a serem carregados</tr>
+        </div>
+        <div class="col-sm-12 text-center"  th:if="${not wrapperPage.page.content.isEmpty()}">
+            <ul class="pagination pagination-sm" th:with="curretPage=${wrapperPage.getPage().number}">
+
+                <li th:classappend="${wrapperPage.page.isFirst()} ? disabled">
+                    <a th:href="${wrapperPage.urlResolverTo(curretPage - 1)}" th:remove="${wrapperPage.page.isFirst()} ? tag">
+                        <span>&laquo;</span>
+                    </a>
+                </li>
+
+                <th:block th:each="p : ${#numbers.sequence(1, wrapperPage.page.totalPages)}" th:with="pageNumber=${p - 1}">
+                    <li th:classappend="${pageNumber == curretPage} ? active">
+                        <a th:href="${wrapperPage.urlResolverTo(pageNumber)}">[[${p}]]</a>
+                    </li>
+                </th:block>
+                <th:block th:if="${wrapperPage.page.totalPages} == 1">
+                    <li>
+                        <a th:href="${wrapperPage.urlResolverTo(1)}">2</a>
+                    </li>
+                </th:block>
+
+
+                <li th:classappend="${wrapperPage.page.isLast()} ? disable">
+                    <a th:href="${wrapperPage.urlResolverTo(curretPage + 1)}" th:remove="${wrapperPage.page.isLast()} ? tag">
+                        <span>&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>
+<th:block layout:fragment="js-import-extras">
+</th:block>
+
+</body>
+</html>

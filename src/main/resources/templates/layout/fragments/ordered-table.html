@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+
+<th:block th:fragment="ordered-table(page, property, text)">
+
+    <a th:href="${page.orderedUrl(property)}" th:remove="${page.page.isEmpty()} ? tag">
+        <span th:text="${text}"></span>
+
+        <span class="dropup" th:remove="${page.isAscendent(property)} ? tag"  th:if="${page.isOrdered(property)}">
+            <span class="caret"></span>
+        </span>
+    </a>
+</th:block>
+
+
+</html>

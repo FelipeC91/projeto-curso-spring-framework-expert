@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+    <aside class="aw-layout-sidebar  js-sidebar" th:fragment="side-nav">
+        <div class="aw-layout-sidebar__content">
+
+            <nav class="aw-menu  js-menu">
+                <ul class="aw-menu__list">
+
+                    <li class="aw-menu__item">
+                        <a th:href="@{/}">
+                            <i class="fa  fa-fw  fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="aw-menu__item">
+                        <a href="#">
+                            <i class="fa  fa-fw  fa-truck"></i>
+                            <span>Estoque</span>
+                            <i class="aw-menu__navigation-icon  fa"></i>
+                        </a>
+
+                        <ul class="aw-menu__list  aw-menu__list--sublist">
+                            <li class="aw-menu__item  aw-menu__item--link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/style')} ? 'is-active' ">
+                                <a th:href="@{/style/search}">Cadastro de cerveja</a>
+                            </li>
+
+                            <li class="aw-menu__item  aw-menu__item--link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/beer')} ? 'is-active' ">
+                                <a th:href="@{/beer/search}">Pesquisa de cerveja</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="aw-menu__item">
+                        <a href="#">
+                            <i class="fa  fa-fw  fa-database"></i>
+                            <span>Cadastros</span>
+                            <i class="aw-menu__navigation-icon  fa"></i>
+                        </a>
+
+                        <ul class="aw-menu__list  aw-menu__list--sublist">
+                            <li class="aw-menu__item  aw-menu__item--link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/city')} ? 'is-active' ">
+                                <a th:href="@{/city/search}">Cidade</a>
+                            </li>
+
+                            <li class="aw-menu__item  aw-menu__item--link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/customer')} ? 'is-active' ">
+                                <a th:href="@{/customer/search}">Cliente</a>
+                            </li>
+
+                            <li class="aw-menu__item  aw-menu__item--link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/user')} ? 'is-active' ">
+                                <a th:href="@{/user}">Usuário</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </nav>
+        </div>
+    </aside>
+</body>
+</html>

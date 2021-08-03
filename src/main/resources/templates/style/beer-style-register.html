@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="'layout/layout'">
+
+<head>
+    <title>Cadastro de estilo</title>
+</head>
+
+<section layout:fragment="content">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>Cadastro de estilo</h1>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasErrors('${estilo.*}')}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div th:each="detailError :  ${#fields.detailedErrors('${estilo.*}')}">
+                <i class="fa  fa-exclamation-circle"></i>
+                <span>[[${detailError.message}]]</span>
+            </div>
+        </div>
+
+        <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${msg != null}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <i class="fa  fa-exclamation-circle"></i>
+            <span th:text="${msg}"></span>
+        </div>
+
+
+        <form method="POST" th:object="${estilo}">
+
+            <div class="row">
+                <div class="form-group  col-sm-12" th:classappend="${#fields.hasErrors('nome')} ? 'has-error'">
+                    <label for="nome" class="control-label">Nome</label>
+                    <input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+                </div>
+            </div>
+
+            <button type="submit" class="btn  btn-primary">Salvar</button>
+        </form>
+    </div>
+</section>
+
+</html>

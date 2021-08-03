@@ -1,0 +1,1 @@
+ALTER TABLE cliente CHANGE COLUMN tipo_pessoa tipo_cliente VARCHAR(15) NOT NULL;

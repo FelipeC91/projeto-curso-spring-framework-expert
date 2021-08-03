@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>::Brewer</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/algaworks.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/application.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}"/>
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <section class="aw-layout-content  js-content" layout:fragment="content">
+        <div class="page-header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <h1>Cadastro de Cliente</h1>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="aw-page-header-controls">
+                            <div class="aw-page-header-controls">
+                                <a class="btn btn-default" th:href="@{/customer/search}">
+                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                    <span class="hidden-xs hidden-sm">Pesquisar</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+
+            <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasErrors('${cliente.*}')}">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div th:each="detailedError :  ${#fields.detailedErrors('${cliente.*}')}">
+                    <i class="fa  fa-exclamation-circle"></i>
+                    <span>[[${detailedError.message}]]</span>
+                </div>
+            </div>
+
+            <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${msg != null}">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <i class="fa  fa-exclamation-circle"></i>
+                <span th:text="${msg}"></span>
+            </div>
+
+            <form method="POST"  class="form-vertical  js-form-loading" th:action="@{/customer/new}" th:object="${cliente}">
+
+                <div class="row">
+                    <div class="form-group col-sm-3 app-required-field" th:classappend="${#fields.hasErrors('tipoCliente')} ? 'has-error'">
+                        <label>Pessoa</label>
+                        <div class="app-form-composition">
+                            <th:block th:each="tipoCliente : ${tiposCliente}">
+                                <div class="radio radio-inline">
+                                    <input type="radio" th:id="${tipoCliente}" th:value="${tipoCliente}" class="js-customer-type-radio" th:attr="data-document=${tipoCliente.document}, data-mask=${tipoCliente.mask}" th:field="*{tipoCliente}"/>
+                                    <label class="control-label" th:for="${tipoCliente}" th:text="${tipoCliente.description}">Física</label>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-9" th:classappend="${#fields.hasErrors('cpfCnpj')} ? 'has-error'">
+                        <label for="cpfOrCnpj">CPF/CNPJ</label>
+                        <input id="cpfOrCnpj" type="text" class="form-control" disabled th:field="*{cpfCnpj}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-4" th:classappend="${#fields.hasErrors('telefone')} ? 'has-error'">
+                        <label for="telefone">Telefone</label>
+                        <input id="telefone" type="text" class="form-control js-phone-mask" th:field="*{telefone}"/>
+                    </div>
+
+                    <div class="form-group col-sm-8" th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
+                        <label for="email">E-mail</label>
+                        <input id="email" type="text" class="form-control" th:field="*{email}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6" th:classappend="${#fields.hasErrors('endereco')} ? 'has-error'">
+                        <label for="logradouro">Logradouro</label>
+                            <input type="text" id="logradouro" class="form-control" th:field="*{endereco.logradouro}">
+                    </div>
+
+                    <div class="form-group col-sm-2">
+                        <label for="numero">Número</label>
+                        <input type="text" id="numero" class="form-control" th:field="*{endereco.numero}">
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="complemento">Complemento</label>
+                        <input type="text" id="complemento" class="form-control" th:field="*{endereco.complemento}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" class="form-control" th:field="*{endereco.cep}">
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="estado">Estado</label>
+                        <select id="estado" class="form-control">
+                            <option value="0" disabled selected>Selecione...</option>
+                            <option th:each="estado : ${estados}" th:value="${estado.codigo}" th:text="${estado.nome}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="cidade">Cidade</label>
+                        <div class="bw-field-action">
+                            <select id="cidade" class="form-control" th:attr="data-url=@{/city}" disabled th:field="*{endereco.cidade}">
+                            </select>
+                            <span class="bw-field-action__icon js-img-loading" style="display: none;">
+                                <img th:src="@{/assets/img/mini-loading.gif}">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn  btn-primary" type="submit">Salvar</button>
+                </div>
+
+            </form>
+        </div>
+
+    </section>
+
+    <th:block layout:fragment="js-import-extras">
+        <script th:src="@{/assets/js/vendors/jquery/jquery.mask.min.js}"></script>
+    </th:block>
+</body>
+</html>
