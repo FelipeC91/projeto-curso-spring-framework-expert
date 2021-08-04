@@ -1,6 +1,14 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
+# IntelliJ Idea
+.idea/
+out/
+*.ipr
+*.iws
+*.iml
+
+
 ### STS ###
 .apt_generated
 .classpath
