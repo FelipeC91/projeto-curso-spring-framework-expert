@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/fotos")
-public class FotosController {
+public class PhotoController {
 
     @Autowired
     @Qualifier("fotoStorageLocal")

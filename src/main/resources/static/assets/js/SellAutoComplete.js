@@ -3,25 +3,20 @@ import {currensyFormater} from "./script.js";
 export class SellAutoComplete {
     constructor() {
         this.input = $('.js-sku-name-search-input')
+        this.emitter = $({});
+        this.on = this.emitter.on.bind(this.emitter)
     }
 
     init = () => {
-        var options = {
-            url: (skuOrName) => '/beer?skuOrName=' + skuOrName,
-            getValue: 'nome',
-            minCharNumber: 3,
-            requestDelay: 300,
+        const onSelectedItem = () => {
+            const sellectedItem = this.input.getSelectedItemData();
+            this.emitter.trigger('onSelectedItem', sellectedItem);
+        };
 
-            ajaxSettings: {
-                contentType: 'application/json'
-            },
+        const resolveTemplate = (nome, cerveja) => {
+            cerveja.foto = cerveja.foto.length < 1 ? 'cerveja-mock.png' : cerveja.foto;
 
-            template: {
-                type: 'custom',
-                method: (nome, cerveja) => {
-                    cerveja.foto = cerveja.foto.length < 1 ? 'cerveja-mock.png' : cerveja.foto;
-
-                    return `  <div class="bw-tabela-item" th:fragment="autoCompleteFragment">
+            return `  <div class="bw-tabela-item" th:fragment="autoCompleteFragment">
                                 <div class="bw-tabela-item__coluna  bw-tabela-item__coluna--foto">
                                   <img src="/fotos/thumbnail/thumbnail.${cerveja.foto}" class="img-responsive" />
                                 </div>
@@ -35,7 +30,25 @@ export class SellAutoComplete {
                                 </div>
                               </div>
                             `
-                }
+        }
+
+        var options = {
+            url: (skuOrName) => '/beer?skuOrName=' + skuOrName,
+            getValue: 'nome',
+            minCharNumber: 3,
+            requestDelay: 300,
+
+            ajaxSettings: {
+                contentType: 'application/json'
+            },
+
+            template: {
+                type: 'custom',
+                method: resolveTemplate
+            },
+
+            list: {
+                onChooseEvent: onSelectedItem.bind(this)
             }
 
 

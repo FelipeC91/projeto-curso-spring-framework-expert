@@ -1,7 +1,6 @@
 package br.com.personalportifolio.brewer.storage.local;
 
 import br.com.personalportifolio.brewer.storage.FotoStorage;
-import net.coobird.thumbnailator.Thumbnailator;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
 import org.slf4j.Logger;

@@ -162,10 +162,17 @@ upload component
 
     padding: 15px 0;
 
-    display: flex;
-    flex-direction: row;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
+.bw-tabela-item:after {
+    clear: both;
+    display: block;
+    content: "";
+}
 
 .bw-tabela-item ~ .bw-tabela-item {
     border-top: 1px solid #ddd;
@@ -210,6 +217,33 @@ upload component
 .bw-tabela-cerveja-valor-pequeno {
     font-weight: 300;
     font-size: 1em;
+}
+
+.bw-tabela-cerveja-valor-medio {
+    font-weight: 300;
+    font-size: 1.3em;
+}
+
+.bw-tabela-cerveja-valor-grande {
+    font-weight: 300;
+    font-size: 1.6em;
+}
+
+@media (min-width: 768px) { /* screen-sm-min */
+    .bw-tabela-item__coluna {
+        float: left;
+        margin-left: 0px;
+    }
+
+    .bw-tabela-item__coluna--detalhes {
+        width: calc(70% - 30px);
+    }
+
+    .bw-tabela-item__coluna--valores {
+        width: calc(30% - 30px);
+
+        text-align: right;
+    }
 }
 
 .bw-tabela-cerveja-valor-medio {

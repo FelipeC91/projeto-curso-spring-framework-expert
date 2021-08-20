@@ -9,6 +9,7 @@ import {MultiselectionButtomImp} from "./MultiselectionButtomImp.js";
 import {CustomerQuickSearch} from './CustomerQuickSearch.js';
 import * as beerPhotoView from './beerPhotoView.js';
 import {SellAutoComplete} from "./SellAutoComplete.js";
+import {SellTableItems} from './SellTableItems.js'
 
 const maskMoney = new MaskMoneyImpl('.js-decimal-mask', '.js-integer-mask')
 const maskPhone = new MaskPhoneImpl();
@@ -22,15 +23,17 @@ const multiselectionButtomImp = new MultiselectionButtomImp();
 
 const customerQuickSearch = new CustomerQuickSearch();
 const sellAutocomplete = new SellAutoComplete();
-
 export const currensyFormater = (value) => {
-  numeral.language('pt-br');
-  return numeral(value).format('0,0.00')
+
+    numeral.language('pt-br');
+    return numeral(value).format('0,0.00')
 }
+
 
 $(window).load( () => {
 
     var security = new Security();
+
     security.enableSecurityRequest();
     multiselectionButtomImp.init();
     maskMoney.makeMasks();
@@ -38,13 +41,14 @@ $(window).load( () => {
     maskClientType.init();
     //maskCep.apply();
     estadoLoader.init();
-
     cidadesProvider.init();
 
         console.log(window.location.href)
-        customerQuickSearch.init()
-        sellAutocomplete.init()
 
+    customerQuickSearch.init()
+    sellAutocomplete.init()
+    const sellTableItems = new SellTableItems(sellAutocomplete)
+    sellTableItems.init()
 });
 
 const form = $('.js-form-decimal-container')

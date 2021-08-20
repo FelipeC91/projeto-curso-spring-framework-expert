@@ -1,5 +1,6 @@
 package br.com.personalportifolio.brewer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -26,6 +27,7 @@ public class Estilo implements Serializable {
     @Size(max = 20,min = 1)
     private String nome;
 
+    @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "estilo")
     private List<Cerveja> cervejas = new ArrayList<>();
