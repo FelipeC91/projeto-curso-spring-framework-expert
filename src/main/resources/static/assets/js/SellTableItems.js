@@ -12,7 +12,7 @@ export class SellTableItems {
                 sellItems.forEach(item => {
                     item.cerveja.foto = item.cerveja.foto !== null ? 'cerveja-mock.png' : cerveja.foto;
 
-                    const html = `<div class="bw-tabela-item">
+                    const html = `<div class="bw-tabela-item solicitando-exclusao    js-tabela-item">
                                                 <div class="bw-tabela-item__coluna  bw-tabela-item__coluna--foto">
                                                     <img src="/fotos/thumbnail/thumbnail.${item.cerveja.foto}" class="img-responsive"/>
                                                 </div>
@@ -31,14 +31,28 @@ export class SellTableItems {
                                                     </div>
                                                     
                                                     <div class="bw-tabela-cerveja-valor-grande">R$ ${item.valorTotal}</div>
-                                                    
-                                                </div>`
+                                                </div>
+                                                
+                                                <div class="bw-tabela-item__painel-exclusao ">
+                                                    <span class="bw-tabela-item__titulo-exclusao">Deseja excluir este ítem da venda?</span>
+                                                    <buttom class="btn btn-danger">Excluir</buttom>
+                                                </div>
+                                                `
                     this.tableContainer.append(html);
 
-                    $('.js-tabela-qtd-item').on('change', onQtdItemChange.bind(this))
+                    $('.js-tabela-qtd-item').on('change', onQtdItemChange.bind(this));
+                    $('.js-tabela-item').on('dblclick', onDoubleClick)
+
                 })
         }
 
+        const onDoubleClick = (evt) => {
+            console.log('solicitando-exclusao')
+            const currentTarget = $(evt.currentTarget);
+            console.log(currentTarget)
+            currentTarget.toggleClass('solicitando-exclusao')
+
+        }
 
         const onQtdItemChange = (evt) => {
             const input = $(evt.target);
