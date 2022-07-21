@@ -1,6 +1,5 @@
 package br.com.personalportifolio.brewer.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,12 +10,13 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ItemVenda implements Serializable {
 
+    @EqualsAndHashCode.Include
     private Long codigo;
     private Integer quantidade;
     private BigDecimal valorUnitario;
     private Cerveja cerveja;
 
     public BigDecimal getValorTotal() {
-        return BigDecimal.valueOf(this.getQuantidade().doubleValue()).multiply(this.valorUnitario);
+        return valorUnitario.multiply(BigDecimal.valueOf(quantidade.longValue()));
     }
 }

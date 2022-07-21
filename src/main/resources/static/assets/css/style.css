@@ -1,36 +1,34 @@
-
-
-
 /*
-#################
-    utils
-#################
- */
-
-.app-icon-large {
-    font-size: 24px;
-    margin-left: 7px;
-    margin-top: 3px;
+######################
+# UTILIDADES
+######################
+*/
+.bw-glyphicon-large {
+    font-size: 18px;
 }
 
-
-.app-form-composition {
-    display: flex;
-}
-
-.app-form-composition__icon{
-
-}
-
-.app-required-field > .control-label {
+.bw-required > .control-label:after {
     content: "*";
 }
 
+
 /*
-upload component
+######################
+# COMPONENTES
+######################
 */
 
-.app-upload {
+/* Field Action */
+.bw-field-action {
+    display: flex;
+}
+
+.bw-field-action__icon {
+    margin: 6px 0 0 5px;
+}
+
+/* Upload */
+.bw-upload {
     padding: 15px;
 
     border: 1px dashed #ddd;
@@ -40,7 +38,7 @@ upload component
     text-align: center;
 }
 
-.app-upload-form-file {
+.bw-upload-form-file {
     display: inline-block;
     vertical-align: middle;
     position: relative;
@@ -48,7 +46,7 @@ upload component
     margin-bottom: 1px;
 }
 
-.app-upload-form-file > input[type=file] {
+.bw-upload-form-file > input[type=file] {
     position: absolute;
     top: 0;
     left: 0;
@@ -59,7 +57,6 @@ upload component
 
     font-size: 500px;
 }
-
 
 /* Tabela Simples */
 .bw-tabela-simples {
@@ -77,8 +74,16 @@ upload component
     vertical-align: middle;
 }
 
+/*
+###################
+# PÁGINAS DO SISTEMA
+###################
+*/
 
-/* pagina beer-search */
+/* Colunas comuns */
+.table-col-acoes {
+    width: 80px;
+}
 
 /* Colunas - Pesquisa de Cervejas */
 .table-cervejas-col-foto {
@@ -112,38 +117,78 @@ upload component
     width: 80px;
 }
 
-/* pagina customer-register */
-/*gif */
-
-.bw-field-action {
-    display: flex;
+/* Colunas - Pesquisa de Estilos */
+.table-estilos-col-codigo {
+    width: 80px;
 }
 
-.bw-field-action__icon {
-    margin: 6px 0 0 5px;
+/* Colunas - Pesquisa de Clientes */
+.table-clientes-col-nome {
+
 }
 
-/* pagina beer-search */
-/* Colunas - Pesquisa usuarios*/
-.table-users-col-status {
+.table-clientes-col-tipo-pessoa {
+    width: 120px;
+    text-align: center;
+}
+
+.table-clientes-col-cpf-cnpj {
+    width: 140px;
+    text-align: right;
+}
+
+.table-clientes-col-telefone {
+    width: 140px;
+    text-align: right;
+}
+
+.table-clientes-col-cidade-estado {
+    width: 140px;
+    text-align: right;
+}
+
+/* Colunas - Pesquisa de cidades */
+.table-cidades-col-nome {
+
+}
+
+.table-cidades-col-estado {
+    width: 140px;
+    text-align: right;
+}
+
+/* Colunas - Pesquisa de usuários */
+.table-usuarios-col-status {
     width: 30px;
+    text-align: center;
 }
+
+/* Tabela Cervejas página de Venda */
+.bw-tabela-cervejas {
+    margin-bottom: 15px;
+}
+
+.bw-tabela-cervejas__vazio {
+    padding: 15px 15px;
+
+    border: 1px dashed #ddd;
+
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 300;
+    color: #555;
+}
+
 
 /*
-#################
-    custom components
-#################
- */
+######################################
+# CUSTOMIZAÇÃO DE COMPONENTES
+######################################
+*/
 
- .checkbox input[type="checkbox"]:checked + input + label::after {
+.checkbox input[type="checkbox"]:checked + input + label::after {
     font-family: 'FontAwesome';
-     content: "\f00c";
- }
-
- /* Pagina sell-new */
-.bw-tabela-cervejas__vazio {
-    text-align: center;
-    margin: 5rem;
+    content: "\f00c";
 }
 
 /* Easy Autocomplete */
@@ -258,40 +303,12 @@ upload component
     font-size: 1.3em;
 }
 
-
 @media (min-width: 768px) { /* screen-sm-min */
     .bw-tabela-item__painel-exclusao {
         width: 40%;
         padding-top: 10px;
     }
 
-    .bw-tabela-item__coluna {
-        float: left;
-        margin-left: 0px;
-    }
-
-    .bw-tabela-item__coluna--detalhes {
-        width: calc(70% - 30px);
-    }
-
-    .bw-tabela-item__coluna--valores {
-        width: calc(30% - 30px);
-
-        text-align: right;
-    }
-}
-
-.bw-tabela-cerveja-valor-medio {
-    font-weight: 300;
-    font-size: 1.3em;
-}
-
-.bw-tabela-cerveja-valor-grande {
-    font-weight: 300;
-    font-size: 1.6em;
-}
-
-@media (min-width: 768px) { /* screen-sm-min */
     .bw-tabela-item__coluna {
         float: left;
         margin-left: 0px;

@@ -1,41 +1,52 @@
 <!DOCTYPE html>
-<html lang="pt-br"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="https://www.thymeleaf.org"
-      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
-<head>
-  <meta charset="UTF-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<html
+  lang="pt-br"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="https://www.thymeleaf.org"
+  xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>::Brewer</title>
-  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/easy-autocomplete.min.css}"/>
-  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/easy-autocomplete.themes.min.css}"/>
+    <title>::Brewer</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/assets/css/vendors/easy-autocomplete.min.css}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/assets/css/vendors/easy-autocomplete.themes.min.css}"
+    />
 
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-</head>
-<body>
-  <section class="aw-layout-content  js-content" layout:fragment="content">
-    <div class="page-header">
-      <div class="container-fluid">
-        <h1>Cadastro de venda</h1>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <section class="aw-layout-content js-content" layout:fragment="content">
+      <div class="page-header">
+        <div class="container-fluid">
+          <h1>Cadastro de venda</h1>
+        </div>
       </div>
-    </div>
 
-    <div class="container-fluid">
+      <div class="container-fluid">
         <form method="POST" th:action="@{/sell/new}">
-
+          <input type="hidden" id="uuid" th:value="${uuid}" />
           <div class="row">
             <div class="col-sm-4">
               <div class="aw-box">
                 <div class="aw-box__icon">
-                  <i class="fa  fa-usd  fa-3x"></i>
+                  <i class="fa fa-usd fa-3x"></i>
                 </div>
 
                 <div class="aw-box__value">R$0,00</div>
@@ -47,7 +58,7 @@
             <div class="col-sm-4">
               <div class="aw-box">
                 <div class="aw-box__icon">
-                  <i class="fa  fa-tag  fa-3x"></i>
+                  <i class="fa fa-tag fa-3x"></i>
                 </div>
 
                 <div class="aw-box__value">Orçamento</div>
@@ -59,7 +70,7 @@
             <div class="col-sm-4">
               <div class="aw-box">
                 <div class="aw-box__icon">
-                  <i class="fa  fa-calendar  fa-3x"></i>
+                  <i class="fa fa-calendar fa-3x"></i>
                 </div>
 
                 <div class="aw-box__value">
@@ -72,46 +83,71 @@
           </div>
 
           <div class="row">
-            <div class="form-group  col-sm-4  bw-required">
+            <div class="form-group col-sm-4 bw-required">
               <label class="control-label" for="nomeCliente">Cliente</label>
 
               <div class="input-group">
-                <input id="nomeCliente" type="text" readonly="readonly" class="form-control" placeholder="Clique na lupa para pesquisar o cliente"/>
+                <input
+                  id="nomeCliente"
+                  type="text"
+                  readonly="readonly"
+                  class="form-control"
+                  placeholder="Clique na lupa para pesquisar o cliente"
+                />
 
-                <input id="codigoCliente" type="hidden">
+                <input id="codigoCliente" type="hidden" />
                 <span class="input-group-btn">
-                  <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada"
-                                 data-toggle="modal" data-target="#pesquisaRapidaClientes">
-                    <i class="glyphicon  glyphicon-search"></i>
+                  <button
+                    class="btn btn-default js-tooltip"
+                    type="button"
+                    title="Pesquisa avançada"
+                    data-toggle="modal"
+                    data-target="#pesquisaRapidaClientes"
+                  >
+                    <i class="glyphicon glyphicon-search"></i>
                   </button>
                 </span>
               </div>
             </div>
 
-            <div class="form-group  col-sm-4 bw-required">
-              <label class="control-label" for="valorFrete">Valor do frete</label>
+            <div class="form-group col-sm-4 bw-required">
+              <label class="control-label" for="valorFrete"
+                >Valor do frete</label
+              >
 
               <div class="input-group">
                 <div class="input-group-addon">R$</div>
 
-                <input type="text" maxlength="14" class="form-control  js-decimal" id="valorFrete"/>
+                <input
+                  type="text"
+                  maxlength="14"
+                  class="form-control js-decimal"
+                  id="valorFrete"
+                />
               </div>
             </div>
 
-            <div class="form-group  col-sm-4">
-              <label class="control-label" for="valorDesconto">Valor do desconto</label>
+            <div class="form-group col-sm-4">
+              <label class="control-label" for="valorDesconto"
+                >Valor do desconto</label
+              >
 
               <div class="input-group">
                 <div class="input-group-addon">R$</div>
 
-                <input type="text" maxlength="14" class="form-control  js-decimal" id="valorDesconto"/>
+                <input
+                  type="text"
+                  maxlength="14"
+                  class="form-control js-decimal"
+                  id="valorDesconto"
+                />
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="form-group  col-lg-12">
-              <ul class="nav nav-tabs  js-abas-venda">
+            <div class="form-group col-lg-12">
+              <ul class="nav nav-tabs js-abas-venda">
                 <li role="presentation" class="active">
                   <a href="#cervejas">Cervejas</a>
                 </li>
@@ -123,43 +159,53 @@
 
           <div class="tab-content">
             <div class="tab-pane active" id="cervejas">
-
               <div class="row">
-                <div class="form-group  col-lg-12">
-                  <input type="text" class="form-control js-sku-name-search-input" id="cerveja"
-                         placeholder="Pesquise e adicione a cerveja pelo SKU ou nome" autofocus="autofocus" />
+                <div class="form-group col-lg-12">
+                  <input
+                    type="text"
+                    class="form-control js-sku-name-search-input"
+                    id="cerveja"
+                    placeholder="Pesquise e adicione a cerveja pelo SKU ou nome"
+                    autofocus="autofocus"
+                  />
                 </div>
               </div>
 
               <div class="js-tabela-cervejas-container">
-
                 <div class="bw-tabela-cervejas__vazio">
-                  <i class="glyphicon  glyphicon-shopping-cart"></i>
+                  <i class="glyphicon glyphicon-shopping-cart"></i>
 
                   <span>Você ainda não adicionou nenhuma cerveja.</span>
                 </div>
               </div>
-
             </div>
 
             <div class="tab-pane" id="entrega">
               <div class="row">
-                <div class="form-group  col-sm-3">
-                  <label class="control-label" for="dataEntrega">Data da entrega</label>
+                <div class="form-group col-sm-3">
+                  <label class="control-label" for="dataEntrega"
+                    >Data da entrega</label
+                  >
 
-                  <input type="text" class="form-control" id="dataEntrega"/>
+                  <input type="text" class="form-control" id="dataEntrega" />
                 </div>
 
-                <div class="form-group  col-sm-3">
-                  <label class="control-label" for="horarioEntrega">Horário de entrega</label>
-                  <input type="text" class="form-control" id="horarioEntrega"/>
+                <div class="form-group col-sm-3">
+                  <label class="control-label" for="horarioEntrega"
+                    >Horário de entrega</label
+                  >
+                  <input type="text" class="form-control" id="horarioEntrega" />
                 </div>
               </div>
 
               <div class="row">
-                <div class="form-group  col-sm-12">
-                  <textarea class="form-control" id="observaca" rows="5"
-                  placeholder="Alguma observação para o entregador desse pedido?"></textarea>
+                <div class="form-group col-sm-12">
+                  <textarea
+                    class="form-control"
+                    id="observaca"
+                    rows="5"
+                    placeholder="Alguma observação para o entregador desse pedido?"
+                  ></textarea>
                 </div>
               </div>
             </div>
@@ -168,8 +214,12 @@
           <div class="row" style="clear: both">
             <div class="col-lg-12">
               <div class="btn-group">
-                <button type="submit" class="btn  btn-primary">Salvar</button>
-                <button type="button" class="btn  btn-primary  dropdown-toggle" data-toggle="dropdown">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button
+                  type="button"
+                  class="btn btn-primary dropdown-toggle"
+                  data-toggle="dropdown"
+                >
                   <span class="caret"></span>
                 </button>
 
@@ -179,24 +229,29 @@
                 </ul>
               </div>
 
-              <button class="btn  btn-danger">Cancelar</button>
+              <button class="btn btn-danger">Cancelar</button>
             </div>
           </div>
         </form>
-    </div>
-    <th:block th:replace="customer/fragments/customer-quick-search :: customerQuickSearch"></th:block>
-  </section>
+      </div>
+      <th:block
+        th:replace="customer/fragments/customer-quick-search :: customerQuickSearch"
+      ></th:block>
+    </section>
 
-  <th:block layout:fragment="js-import-extras">
-    <script type="module" th:src="@{/assets/js/vendors/jquery.easy-autocomplete.min.js}"></script>
-    <script>
-      $(function() {
-        $('.js-abas-venda a').click(function (e) {
-          e.preventDefault();
-          $(this).tab('show');
+    <th:block layout:fragment="js-import-extras">
+      <script
+        type="module"
+        th:src="@{/assets/js/vendors/jquery.easy-autocomplete.min.js}"
+      ></script>
+      <script>
+        $(function () {
+          $(".js-abas-venda a").click(function (e) {
+            e.preventDefault();
+            $(this).tab("show");
+          });
         });
-      });
-    </script>
-  </th:block>
-</body>
+      </script>
+    </th:block>
+  </body>
 </html>

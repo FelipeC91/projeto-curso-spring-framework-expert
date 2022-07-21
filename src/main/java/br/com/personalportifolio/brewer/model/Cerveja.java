@@ -3,7 +3,6 @@ package br.com.personalportifolio.brewer.model;
 import br.com.personalportifolio.brewer.validation.SKU;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.coobird.thumbnailator.name.Rename;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
