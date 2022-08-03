@@ -13,7 +13,7 @@ import br.com.personalportifolio.brewer.model.ItemVenda;
 
 @SessionScope
 @Component
-public class TabelaTtensSession {
+public class TabelaItemsSession {
     private Set<TabelaItensVenda> tabelas = new HashSet<>();
 
     public void adicionarItem(String uuid, Cerveja cerveja, int quantidade) {

@@ -2,7 +2,7 @@ package br.com.personalportifolio.brewer.controller;
 
 import br.com.personalportifolio.brewer.model.ItemVenda;
 import br.com.personalportifolio.brewer.repository.CervejaCustomRepository;
-import br.com.personalportifolio.brewer.session.TabelaTtensSession;
+import br.com.personalportifolio.brewer.session.TabelaItemsSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ public class SellController {
     private CervejaCustomRepository cervejaCustomRepository;
 
     @Autowired
-    private TabelaTtensSession tabelaTtensSession;
+    private TabelaItemsSession tabelaItensSession;
 
     @GetMapping("/new")
     public ModelAndView getVendas() {
@@ -37,18 +37,18 @@ public class SellController {
     List<ItemVenda> addItem(Long codigo, String uuid) {
         var cervejaOptional = cervejaCustomRepository.findById(codigo);
         if (cervejaOptional.isPresent()) {
-            tabelaTtensSession.adicionarItem(uuid, cervejaOptional.get(), 1);
+            tabelaItensSession.adicionarItem(uuid, cervejaOptional.get(), 1);
         }
 
-        return tabelaTtensSession.getItens(uuid);
+        return tabelaItensSession.getItens(uuid);
     }
 
     @PutMapping("/item/{codigoCerveja}")
     public @ResponseBody List<ItemVenda> changeItemQuantity(@PathVariable Long codigoCerveja,
                          Integer quantidade, String uuid) {
         var cerveja = cervejaCustomRepository.findById(codigoCerveja).get();
-        tabelaTtensSession.alterarQuantidade(uuid, cerveja, quantidade);
-        return tabelaTtensSession.getItens(uuid);
+        tabelaItensSession.alterarQuantidade(uuid, cerveja, quantidade);
+        return tabelaItensSession.getItens(uuid);
     }
 
     @DeleteMapping("/item/{uuid}/{codigoCerveja}")
@@ -56,7 +56,7 @@ public class SellController {
                          @PathVariable Long codigoCerveja)  {
 
         var cerveja = cervejaCustomRepository.findById(codigoCerveja).get();
-        tabelaTtensSession.excluirItem(uuid, cerveja);
-         return tabelaTtensSession.getItens(uuid);
+        tabelaItensSession.excluirItem(uuid, cerveja);
+         return tabelaItensSession.getItens(uuid);
     }
 }

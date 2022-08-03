@@ -1,8 +1,12 @@
+import { currensyFormater } from "./script.js";
+
 export class SellTableItems {
   constructor(autocomplete) {
     this.autocomplete = autocomplete;
     this.tableContainer = $(".js-tabela-cervejas-container");
     this.uuid = $("#uuid").val();
+    this.emitter = $({});
+    this.on = this.emitter.on.bind(this.emitter);
   }
 
   init = () => {
@@ -17,63 +21,98 @@ export class SellTableItems {
           </div>
         `);
       } else {
+        let valorTotal = 0;
         sellItems.forEach((item) => {
           item.cerveja.foto =
             item.cerveja.foto !== null ? "cerveja-mock.png" : cerveja.foto;
 
-          const html = `<div class="bw-tabela-item js-tabela-item">
+          const html = `<div class="bw-tabela-item js-tabela-item" data-valor-total="">
                           <div class="bw-tabela-item__coluna  bw-tabela-item__coluna--foto">
-                              <img src="/fotos/thumbnail/thumbnail.${item.cerveja.foto}" class="img-responsive"/>
+                              <img src="/fotos/thumbnail/thumbnail.${
+                                item.cerveja.foto
+                              }" class="img-responsive"/>
                           </div>
   
                           <div class="bw-tabela-item__coluna  bw-tabela-item__coluna--detalhes">
-                              <span class="bw-tabela-cerveja-nome">${item.cerveja.nome}</span>
-                              <span class="label  label-default">${item.cerveja.sku}</span>
-                              <span class="bw-tabela-cerveja-origem" >${item.cerveja.origem}</span>
+                              <span class="bw-tabela-cerveja-nome">${
+                                item.cerveja.nome
+                              }</span>
+                              <span class="label  label-default">${
+                                item.cerveja.sku
+                              }</span>
+                              <span class="bw-tabela-cerveja-origem" >${
+                                item.cerveja.origem
+                              }</span>
                           </div>
   
                           <div class="bw-tabela-item__coluna  bw-tabela-item__coluna--valores">
                               <div class="bw-tabela-cerveja-valor-pequeno">
                                   <input type="number" maxlength="3" class="bw-tabela-cerveja-campo-quantidade js-tabela-qtd-item"
-                                                          data-codigo-cerveja="${item.cerveja.codigo}" value="${item.quantidade}"/>
+                                                          data-codigo-cerveja="${
+                                                            item.cerveja.codigo
+                                                          }" value="${
+            item.quantidade
+          }"/>
                                   <span>x R$ ${item.valorUnitario}</span>
                               </div>
   
-                              <div class="bw-tabela-cerveja-valor-grande">R$ ${item.valorTotal}</div>
+                              <div class="bw-tabela-cerveja-valor-grande">R$ ${currensyFormater(
+                                item.valorTotal
+                              )}</div>
                           </div>
   
                           <div class="bw-tabela-item__painel-exclusao">
                               <span class="bw-tabela-item__titulo-exclusao">Deseja excluir este ítem da venda?</span>
-                              <buttom class="btn btn-danger js-exclusao-item-btn" data-codigo-cerveja="${item.cerveja.codigo}">Excluir</buttom>
+                              <buttom class="btn btn-danger js-exclusao-item-btn" data-codigo-cerveja="${
+                                item.cerveja.codigo
+                              }">Excluir</buttom>
                           </div>
                       </div>                         
                           `;
 
           this.tableContainer.append(html);
+          valorTotal += item.valorTotal;
 
           $(".js-tabela-qtd-item").on("change", onQtdItemChange.bind(this));
           $(".js-tabela-item").on("dblclick", onDoubleClick);
           $(".js-exclusao-item-btn").on("click", onDeleteItemClick.bind(this));
+
+          this.emitter.trigger("sellTableItensUpdate", valorTotal);
         });
       }
     };
 
     const onQtdItemChange = (evt) => {
       const input = $(evt.target);
-      const quantidade = input.val();
-      const cervejaCodigo = input.data("codigo-cerveja");
+      let quantidade = input.val();
 
-      const response = $.ajax({
-        url: "/sell/item/" + cervejaCodigo,
-        method: "PUT",
-        data: {
-          quantidade,
+      const fieldConstraint = new RegExp(/\D/, "g");
 
-          uuid: this.uuid,
-        },
-      });
+      console.log(
+        "regex test " + fieldConstraint.test(quantidade) || quantidade < 1
+      );
 
-      response.done(onRecivedItem.bind(this));
+      if (fieldConstraint.test(quantidade) || quantidade < 1) {
+        console.log(fieldConstraint.test(quantidade));
+        input.val(1);
+        quantidade = 1;
+      } else {
+        console.log(quantidade);
+
+        const cervejaCodigo = input.data("codigo-cerveja");
+
+        const response = $.ajax({
+          url: "/sell/item/" + cervejaCodigo,
+          method: "PUT",
+          data: {
+            quantidade,
+
+            uuid: this.uuid,
+          },
+        });
+
+        response.done(onRecivedItem.bind(this));
+      }
     };
 
     const onDoubleClick = (evt) => {
