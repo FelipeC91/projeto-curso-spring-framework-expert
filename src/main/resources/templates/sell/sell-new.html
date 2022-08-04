@@ -40,8 +40,25 @@
       </div>
 
       <div class="container-fluid">
-        <form method="POST" th:action="@{/sell/new}">
-          <input type="hidden" id="uuid" th:value="${uuid}" />
+        <div
+          class="alert alert-success alert-dismissible"
+          role="alert"
+          th:if="${msg != null}"
+        >
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <i class="fa fa-exclamation-circle"></i>
+          <span th:text="${msg}"></span>
+        </div>
+
+        <form method="POST" th:action="@{/sell/new}" th:object="${venda}">
+          <input type="hidden" id="uuid" th:field="*{uuid}" />
           <div class="row">
             <div class="col-sm-4">
               <div class="aw-box">
@@ -97,7 +114,7 @@
                   placeholder="Clique na lupa para pesquisar o cliente"
                 />
 
-                <input id="codigoCliente" type="hidden" />
+                <input id="codigoCliente" type="hidden" th:field="*{cliente}" />
                 <span class="input-group-btn">
                   <button
                     class="btn btn-default js-tooltip"
@@ -125,6 +142,7 @@
                   maxlength="14"
                   class="form-control js-decimal-mask"
                   id="valorFrete"
+                  th:field="*{valorFrete}"
                 />
               </div>
             </div>
@@ -142,6 +160,7 @@
                   maxlength="14"
                   class="form-control js-decimal-mask"
                   id="valorDesconto"
+                  th:field="*{valorDesconto}"
                 />
               </div>
             </div>
@@ -189,14 +208,24 @@
                     >Data da entrega</label
                   >
 
-                  <input type="text" class="form-control" id="dataEntrega" />
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="dataEntrega"
+                    th:field="*{dataEntrega}"
+                  />
                 </div>
 
                 <div class="form-group col-sm-3">
                   <label class="control-label" for="horarioEntrega"
                     >Horário de entrega</label
                   >
-                  <input type="text" class="form-control" id="horarioEntrega" />
+                  <input
+                    type="hour"
+                    class="form-control"
+                    id="horarioEntrega"
+                    th:field="*{horarioEntrega}"
+                  />
                 </div>
               </div>
 
@@ -207,6 +236,7 @@
                     id="observaca"
                     rows="5"
                     placeholder="Alguma observação para o entregador desse pedido?"
+                    th:field="*{observacao}"
                   ></textarea>
                 </div>
               </div>
