@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -79,10 +80,15 @@ public class Venda implements Serializable {
     @JoinColumn(name = "codigo_usuario")
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "venda")
-    private List<ItemVenda> itemVenda;
+    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    private List<ItemVenda> itensVenda;
 
     public boolean isNova() {
         return this.codigo == null;
+    }
+
+    public void adicionarItens(List<ItemVenda> itensVenda) {
+        this.itensVenda = itensVenda;
+        itensVenda.forEach(i -> i.setVenda(this););
     }
 }
