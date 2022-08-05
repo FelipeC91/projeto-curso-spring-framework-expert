@@ -49,7 +49,7 @@ public class SellController {
         venda.setUsuario(usuario.getUsuario());
 
         vendaService.save(venda);
-        redirectAttributes.addAttribute("msg", "Venda salva com sucesso!");
+        redirectAttributes.addFlashAttribute("msg", "Venda salva com sucesso!");
         return new ModelAndView("redirect:/sell/new");
     }
 

@@ -32,9 +32,11 @@ public class VendaService {
         venda.setValorTotal(valorTotal);
 
         if (venda.getDataEntrega() != null) {
-            System.out.println(">>>>>>>" + venda.getHorarioEntrega());
+            System.out.println(">>>>>>> " + venda.getHorarioEntrega());
             venda.setDataHoraEntrega(LocalDateTime.of(venda.getDataEntrega(), venda.getHorarioEntrega()));
         }
+
+        vendaRepository.save(venda);
 
     }
 

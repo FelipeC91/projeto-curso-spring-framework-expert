@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS  venda (
                         status VARCHAR(30) NOT NULL,
                         observacao VARCHAR(200),
                         data_hora_entrega DATETIME,
-                        codigo_cliente BIGINT(20) NOT NULL,
+                        codigo_cliente BIGINT(20) NOT NULL, 
                         codigo_usuario BIGINT(20) NOT NULL,
                         FOREIGN KEY (codigo_cliente) REFERENCES cliente(codigo),
                         FOREIGN KEY (codigo_usuario) REFERENCES usuario(codigo)

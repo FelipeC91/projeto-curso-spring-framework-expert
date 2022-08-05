@@ -43,8 +43,18 @@ public class CustomerController {
     }
 
     @PostMapping("/new")
-    public ModelAndView createCustumer(@Valid Cliente cliente, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public ModelAndView createCustumer(@Valid Cliente cliente, BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println(bindingResult.getFieldError());
+            System.out.println();
+            System.out.println();
+            System.out.println();
+
             System.out.println(cliente.toString());
             return newCustomer(cliente);
         }
@@ -63,19 +73,18 @@ public class CustomerController {
 
     @GetMapping("/search")
     public ModelAndView dispatchSearch(CustomerFilter customerFilter, BindingResult bindingResult, Pageable pageable,
-                                       HttpServletRequest httpServletRequest) {
+            HttpServletRequest httpServletRequest) {
         var modelAndView = new ModelAndView("customer/customer-search");
         modelAndView.addObject("customerFilter", customerFilter);
 
-        PageWrapper<Cliente> wrapperPage = new PageWrapper<>(clienteCustomRepository.filtrar(customerFilter, pageable), httpServletRequest);
+        PageWrapper<Cliente> wrapperPage = new PageWrapper<>(clienteCustomRepository.filtrar(customerFilter, pageable),
+                httpServletRequest);
         modelAndView.addObject("wrapperPage", wrapperPage);
         return modelAndView;
     }
 
-    @RequestMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
     public @ResponseBody List<Cliente> searchCustomers(String name) {
         return clienteCustomRepository.findByNomeStartingWithIgnoreCase(name);
     }
 }
-
-
