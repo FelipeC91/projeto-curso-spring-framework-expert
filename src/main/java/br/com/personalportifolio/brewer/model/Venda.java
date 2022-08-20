@@ -24,6 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -81,7 +82,7 @@ public class Venda implements Serializable {
     private Usuario usuario;
 
     @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
-    private List<ItemVenda> itensVenda;
+    private List<ItemVenda> itensVenda = new ArrayList<>();
 
     public boolean isNova() {
         return this.codigo == null;
@@ -89,6 +90,6 @@ public class Venda implements Serializable {
 
     public void adicionarItens(List<ItemVenda> itensVenda) {
         this.itensVenda = itensVenda;
-        itensVenda.forEach(i -> i.setVenda(this););
+        itensVenda.forEach(i -> i.setVenda(this));
     }
 }

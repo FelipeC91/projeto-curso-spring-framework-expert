@@ -24,7 +24,7 @@ export class SellTableItems {
         let valorTotal = 0;
         sellItems.forEach((item) => {
           item.cerveja.foto =
-            item.cerveja.foto !== null ? "cerveja-mock.png" : cerveja.foto;
+            (item.cerveja.foto !== null) ? "cerveja-mock.png" : cerveja.foto;
 
           const html = `<div class="bw-tabela-item js-tabela-item" data-valor-total="">
                           <div class="bw-tabela-item__coluna  bw-tabela-item__coluna--foto">

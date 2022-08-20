@@ -42,7 +42,7 @@ public class VendaService {
 
     private BigDecimal calcValorTotal(Venda venda) {
 
-        BigDecimal valorTotalItens = venda.getItemVenda().stream()
+        BigDecimal valorTotalItens = venda.getItensVenda().stream()
                 .map(ItemVenda::getValorTotal)
                 .reduce(BigDecimal::add)
                 .get();
