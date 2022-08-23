@@ -26,6 +26,8 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -52,7 +54,7 @@ public class Venda implements Serializable {
     private BigDecimal valorDesconto;
 
     @Column(name = "valor_total")
-    private BigDecimal valorTotal;
+    private BigDecimal valorTotal = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
     private StatusVenda status = StatusVenda.ORCAMENTO;
@@ -92,4 +94,16 @@ public class Venda implements Serializable {
         this.itensVenda = itensVenda;
         itensVenda.forEach(i -> i.setVenda(this));
     }
+
+    public BigDecimal calcValorTotal() {
+
+        BigDecimal valorTotalItens = this.getItensVenda().stream()
+                .map(ItemVenda::getValorTotal)
+                .reduce(BigDecimal::add)
+                .get();
+
+        return valorTotalItens.add(Optional.ofNullable(this.getValorFrete()).orElse(BigDecimal.ZERO))
+                  .subtract(Optional.ofNullable(this.getValorDesconto()).orElse(BigDecimal.ZERO));
+    }
+
 }

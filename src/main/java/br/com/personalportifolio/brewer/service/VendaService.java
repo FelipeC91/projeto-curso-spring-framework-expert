@@ -3,6 +3,7 @@ package br.com.personalportifolio.brewer.service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -27,28 +28,18 @@ public class VendaService {
             venda.setDataCriacao(LocalDateTime.now());
         }
 
-        var valorTotal = calcValorTotal(venda);
+        var valorTotal = venda.calcValorTotal();
 
         venda.setValorTotal(valorTotal);
 
         if (venda.getDataEntrega() != null) {
-            System.out.println(">>>>>>> " + venda.getHorarioEntrega());
-            venda.setDataHoraEntrega(LocalDateTime.of(venda.getDataEntrega(), venda.getHorarioEntrega()));
+                venda.setDataHoraEntrega(LocalDateTime.of(venda.getDataEntrega(),
+                        venda.getHorarioEntrega() != null ? venda.getHorarioEntrega() : LocalTime.NOON));
         }
 
         vendaRepository.save(venda);
 
     }
 
-    private BigDecimal calcValorTotal(Venda venda) {
-
-        BigDecimal valorTotalItens = venda.getItensVenda().stream()
-                .map(ItemVenda::getValorTotal)
-                .reduce(BigDecimal::add)
-                .get();
-
-        return valorTotalItens.add(Optional.ofNullable(venda.getValorFrete()).orElse(BigDecimal.ZERO))
-                .subtract(Optional.ofNullable(venda.getValorDesconto()).orElse(BigDecimal.ZERO));
-    }
 
 }

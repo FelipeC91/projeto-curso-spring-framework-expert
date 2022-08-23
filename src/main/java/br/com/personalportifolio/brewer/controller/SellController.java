@@ -55,23 +55,15 @@ public class SellController {
 
         modelAndView.addObject("venda", venda);
         modelAndView.addObject("itens", venda.getItensVenda());
-        if(!venda.getItensVenda().isEmpty()){
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println(venda.getItensVenda().get(0).getCerveja().getNome());
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-        }
+
         return modelAndView;
     }
 
     @PostMapping("/new")
     public ModelAndView setVendas(Venda venda, BindingResult result, RedirectAttributes redirectAttributes,
             @AuthenticationPrincipal UsuarioLogado usuario) {
+
+        venda.calcValorTotal();
 
         List<ItemVenda> itensVenda = tabelaItensSession.getItens(venda.getUuid());
         venda.setItensVenda(itensVenda);
