@@ -63,10 +63,10 @@ public class SellController {
     public ModelAndView setVendas(Venda venda, BindingResult result, RedirectAttributes redirectAttributes,
             @AuthenticationPrincipal UsuarioLogado usuario) {
 
-        venda.calcValorTotal();
 
         List<ItemVenda> itensVenda = tabelaItensSession.getItens(venda.getUuid());
         venda.setItensVenda(itensVenda);
+        venda.calcValorTotal();
 
         sellValidator.validate(venda, result); // equivale a @Valid param
         if (result.hasErrors()) {
@@ -82,6 +82,7 @@ public class SellController {
 
     @PostMapping("/item")
     public @ResponseBody List<ItemVenda> addItem(Long codigo, String uuid) {
+
 
         var cervejaOptional = cervejaCustomRepository.findById(codigo);
         if (cervejaOptional.isPresent()) {

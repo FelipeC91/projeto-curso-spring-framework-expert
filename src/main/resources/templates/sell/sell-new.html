@@ -90,7 +90,7 @@
                 </div>
 
                 <div class="aw-box__value js-aw-box__value">
-                  R$ <span class="js-valor-total-box" th:text="${venda.calcValorTotal}">0,00</span>
+                  R$ <span class="js-valor-total-box" th:text="${venda.valorTotal}"></span>
                 </div>
 
                 <div class="aw-box__title">Total</div>
@@ -138,6 +138,7 @@
                   readonly="readonly"
                   class="form-control"
                   placeholder="Clique na lupa para pesquisar o cliente"
+                  th:field="*{cliente.nome}"
                 />
 
                 <input id="codigoCliente" type="hidden" th:field="*{cliente}" />

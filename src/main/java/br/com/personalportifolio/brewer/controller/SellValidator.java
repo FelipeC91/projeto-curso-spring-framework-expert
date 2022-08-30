@@ -26,20 +26,20 @@ public class SellValidator implements Validator {
 
         validarSeSubmeteuApenasHorarioEntrega(venda, errors);
         validarSeHaItensNaVenda(venda, errors);
-        validarSevalorTotalnegativo(errors, venda);
+        validarSeValorTotalnegativo(errors, venda);
 
     }
 
-    private static void validarSevalorTotalnegativo(Errors errors, Venda venda) {
-        if (venda.calcValorTotal().compareTo(BigDecimal.ZERO) < 0){
-            errors.rejectValue("", "valor total não pode ser negativo");
+    private static void validarSeValorTotalnegativo(Errors errors, Venda venda) {
+        if (venda.getValorTotal().compareTo(BigDecimal.ZERO) < 0){
+            errors.reject("", "valor total não pode ser negativo");
         }
     }
 
     private void validarSeSubmeteuApenasHorarioEntrega(Venda venda, Errors errors) {
 
         if (venda.getHorarioEntrega() != null && venda.getDataEntrega() == null) {
-            errors.rejectValue("dataEntrega", "", "Informe uma data  váçida");
+            errors.rejectValue("dataEntrega", "", "Informe uma data  válida");
         }
     }
 

@@ -95,15 +95,21 @@ public class Venda implements Serializable {
         itensVenda.forEach(i -> i.setVenda(this));
     }
 
-    public BigDecimal calcValorTotal() {
+    public void calcValorTotal() {
 
         BigDecimal valorTotalItens = this.getItensVenda().stream()
                 .map(ItemVenda::getValorTotal)
                 .reduce(BigDecimal::add)
-                .get();
+                .orElse(BigDecimal.ZERO);
+        this.valorTotal = calcValorTotal(valorTotalItens,  this.getValorFrete(), this.getValorDesconto());
 
-        return valorTotalItens.add(Optional.ofNullable(this.getValorFrete()).orElse(BigDecimal.ZERO))
-                  .subtract(Optional.ofNullable(this.getValorDesconto()).orElse(BigDecimal.ZERO));
+    }
+
+    private BigDecimal calcValorTotal(BigDecimal valoTotalItens, BigDecimal valorFrete, BigDecimal valorDesconto) {
+        var valorTotal = valoTotalItens.add(Optional.ofNullable(valorFrete).orElse(BigDecimal.ZERO))
+                .subtract(Optional.ofNullable(valorDesconto).orElse(BigDecimal.ZERO));
+
+        return valorTotal;
     }
 
 }

@@ -57,10 +57,10 @@ export class Sell {
       onValoresAlterados.bind(this)
     );
 
-    this.valorFreteInput.on("keyup", onValorFreteAlterado.bind(this));
-    this.valorFreteInput.on("keyup", onValoresAlterados.bind(this));
+    this.valorFreteInput.on("change", onValorFreteAlterado.bind(this));
+    this.valorFreteInput.on("change", onValoresAlterados.bind(this));
 
-    this.valorDescontoInput.on("keyup", onValoreDescontoAlterado.bind(this));
-    this.valorDescontoInput.on("keyup", onValoresAlterados.bind(this));
+    this.valorDescontoInput.on("change", onValoreDescontoAlterado.bind(this));
+    this.valorDescontoInput.on("change", onValoresAlterados.bind(this));
   }
 }

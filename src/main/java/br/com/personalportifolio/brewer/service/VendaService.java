@@ -28,15 +28,12 @@ public class VendaService {
             venda.setDataCriacao(LocalDateTime.now());
         }
 
-        var valorTotal = venda.calcValorTotal();
-
-        venda.setValorTotal(valorTotal);
 
         if (venda.getDataEntrega() != null) {
                 venda.setDataHoraEntrega(LocalDateTime.of(venda.getDataEntrega(),
                         venda.getHorarioEntrega() != null ? venda.getHorarioEntrega() : LocalTime.NOON));
         }
-
+        System.out.println(venda);
         vendaRepository.save(venda);
 
     }
