@@ -36,7 +36,7 @@ public class ItemVenda implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "codigo_venda")
-    private Venda venda;
+        private Venda venda;
 
     public BigDecimal getValorTotal() {
         return valorUnitario.multiply(BigDecimal.valueOf(quantidade.longValue()));

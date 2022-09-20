@@ -11,8 +11,10 @@ import * as beerPhotoView from "./beerPhotoView.js";
 import { SellAutoComplete } from "./SellAutoComplete.js";
 import { SellTableItems } from "./SellTableItems.js";
 import { Sell } from "./Sell.js";
-
+import { BtnSubmit } from "./BtnSubmit.js";
+//common
 const maskMoney = new MaskMoneyImpl(".js-decimal-mask", ".js-integer-mask");
+
 const maskPhone = new MaskPhoneImpl();
 const maskClientType = new MaskClientTypeImpl();
 const maskCep = new MaskCepImpl();
@@ -22,9 +24,10 @@ const cidadesProvider = new CidadesProvider(estadoLoader);
 
 const multiselectionButtomImp = new MultiselectionButtomImp();
 
+//sell-new
 const customerQuickSearch = new CustomerQuickSearch();
-
 const sellAutocomplete = new SellAutoComplete();
+const btnSubmit = new BtnSubmit();
 
 export const currensyFormater = (value) => {
   numeral.language("pt-br");
@@ -57,6 +60,7 @@ $(window).load(() => {
 
   const sell = new Sell(sellTableItems);
   sell.init();
+  btnSubmit.init();
 });
 
 const form = $(".js-form-decimal-container");

@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import br.com.personalportifolio.brewer.model.StatusVenda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +34,16 @@ public class VendaService {
                 venda.setDataHoraEntrega(LocalDateTime.of(venda.getDataEntrega(),
                         venda.getHorarioEntrega() != null ? venda.getHorarioEntrega() : LocalTime.NOON));
         }
-        System.out.println(venda);
+        System.out.println("======================================================================");
+        venda.getItensVenda().stream().forEach(itemVenda -> itemVenda.setVenda(venda));
         vendaRepository.save(venda);
 
     }
 
+    @Transactional
+    public void emitir(Venda venda) {
+        venda.setStatus(StatusVenda.EMITIDA);
 
+        save(venda);
+    }
 }

@@ -34,7 +34,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table
 public class Venda implements Serializable {
 
     @EqualsAndHashCode.Include

@@ -59,26 +59,65 @@ public class SellController {
         return modelAndView;
     }
 
-    @PostMapping("/new")
-    public ModelAndView setVendas(Venda venda, BindingResult result, RedirectAttributes redirectAttributes,
+    @PostMapping(value = "/new", params = "salvar")
+    public ModelAndView salvar(Venda venda, BindingResult result, RedirectAttributes redirectAttributes,
             @AuthenticationPrincipal UsuarioLogado usuario) {
 
+        validarVenda(venda, result);
+        if (result.hasErrors()) {
+            return novaVenda(venda);
+        }
 
-        List<ItemVenda> itensVenda = tabelaItensSession.getItens(venda.getUuid());
-        venda.setItensVenda(itensVenda);
-        venda.calcValorTotal();
+        System.out.println(usuario);
+        venda.setUsuario(usuario.getUsuario());
 
-        sellValidator.validate(venda, result); // equivale a @Valid param
+
+        vendaService.save(venda);
+        redirectAttributes.addFlashAttribute("msg", "Venda salva com sucesso!");
+        return new ModelAndView("redirect:/sell/new");
+    }
+
+    @PostMapping(value = "/new", params = "emitir")
+    public ModelAndView emitir(Venda venda, BindingResult result, RedirectAttributes redirectAttributes,
+                                  @AuthenticationPrincipal UsuarioLogado usuario) {
+        validarVenda(venda, result);
+        if (result.hasErrors()) {
+            return novaVenda(venda);
+        }
+
+        venda.setUsuario(usuario.getUsuario());
+        vendaService.emitir(venda);
+        redirectAttributes.addFlashAttribute("msg", "Venda emitida com sucesso!");
+        return new ModelAndView("redirect:/sell/new");
+
+    }
+
+    @PostMapping(value = "/new", params = "enviarEmail")
+    public ModelAndView enviarEmail(Venda venda, BindingResult result, RedirectAttributes redirectAttributes,
+                                  @AuthenticationPrincipal UsuarioLogado usuario) {
+        validarVenda(venda, result);
         if (result.hasErrors()) {
             return novaVenda(venda);
         }
 
         venda.setUsuario(usuario.getUsuario());
 
-        vendaService.save(venda);
-        redirectAttributes.addFlashAttribute("msg", "Venda salva com sucesso!");
+//        vendaService.enviarEmail(venda);
+        redirectAttributes.addFlashAttribute("msg", "Venda salva e email enviado com sucesso!");
         return new ModelAndView("redirect:/sell/new");
+
     }
+
+    private void validarVenda(Venda venda, BindingResult result) {
+        List<ItemVenda> itensVenda = tabelaItensSession.getItens(venda.getUuid());
+//        venda.adicionarItens(itensVenda);
+        venda.setItensVenda(itensVenda);
+        venda.calcValorTotal();
+
+        sellValidator.validate(venda, result); // equivale a @Valid param
+    }
+
+
 
     @PostMapping("/item")
     public @ResponseBody List<ItemVenda> addItem(Long codigo, String uuid) {
