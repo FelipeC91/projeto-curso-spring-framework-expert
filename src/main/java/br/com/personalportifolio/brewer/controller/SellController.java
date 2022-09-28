@@ -1,13 +1,18 @@
 package br.com.personalportifolio.brewer.controller;
 
+
 import br.com.personalportifolio.brewer.configuration.security.UsuarioLogado;
+import br.com.personalportifolio.brewer.controller.page.PageWrapper;
 import br.com.personalportifolio.brewer.model.ItemVenda;
+import br.com.personalportifolio.brewer.model.StatusVenda;
 import br.com.personalportifolio.brewer.model.Venda;
 import br.com.personalportifolio.brewer.repository.CervejaCustomRepository;
+import br.com.personalportifolio.brewer.repository.VendaRepository;
+import br.com.personalportifolio.brewer.repository.filter.VendaFilter;
 import br.com.personalportifolio.brewer.service.VendaService;
 import br.com.personalportifolio.brewer.session.TabelaItemsSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -20,7 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 
 @Controller
 @RequestMapping("/sell")
@@ -43,6 +50,9 @@ public class SellController {
         binder.setValidator(sellValidator);
     }
 
+    @Autowired
+    private VendaRepository vendaRepository;
+
     @GetMapping("/new")
     public ModelAndView novaVenda(Venda venda) {
 
@@ -61,7 +71,7 @@ public class SellController {
 
     @PostMapping(value = "/new", params = "salvar")
     public ModelAndView salvar(Venda venda, BindingResult result, RedirectAttributes redirectAttributes,
-            @AuthenticationPrincipal UsuarioLogado usuario) {
+                               @AuthenticationPrincipal UsuarioLogado usuario) {
 
         validarVenda(venda, result);
         if (result.hasErrors()) {
@@ -79,7 +89,7 @@ public class SellController {
 
     @PostMapping(value = "/new", params = "emitir")
     public ModelAndView emitir(Venda venda, BindingResult result, RedirectAttributes redirectAttributes,
-                                  @AuthenticationPrincipal UsuarioLogado usuario) {
+                               @AuthenticationPrincipal UsuarioLogado usuario) {
         validarVenda(venda, result);
         if (result.hasErrors()) {
             return novaVenda(venda);
@@ -94,7 +104,7 @@ public class SellController {
 
     @PostMapping(value = "/new", params = "enviarEmail")
     public ModelAndView enviarEmail(Venda venda, BindingResult result, RedirectAttributes redirectAttributes,
-                                  @AuthenticationPrincipal UsuarioLogado usuario) {
+                                    @AuthenticationPrincipal UsuarioLogado usuario) {
         validarVenda(venda, result);
         if (result.hasErrors()) {
             return novaVenda(venda);
@@ -133,7 +143,7 @@ public class SellController {
 
     @PutMapping("/item/{codigoCerveja}")
     public @ResponseBody List<ItemVenda> changeItemQuantity(@PathVariable Long codigoCerveja,
-            Integer quantidade, String uuid) {
+                                                            Integer quantidade, String uuid) {
 
         var cerveja = cervejaCustomRepository.findById(codigoCerveja).get();
         tabelaItensSession.alterarQuantidade(uuid, cerveja, quantidade);
@@ -142,10 +152,22 @@ public class SellController {
 
     @DeleteMapping("/item/{uuid}/{codigoCerveja}")
     public @ResponseBody List<ItemVenda> excludeItem(@PathVariable String uuid,
-            @PathVariable Long codigoCerveja) {
+                                                     @PathVariable Long codigoCerveja) {
 
         var cerveja = cervejaCustomRepository.findById(codigoCerveja).get();
         tabelaItensSession.excluirItem(uuid, cerveja);
         return tabelaItensSession.getItens(uuid);
+    }
+
+    @GetMapping
+    public ModelAndView pesquisar(VendaFilter vendaFilter, BindingResult bindingResult, Pageable pageable, HttpServletRequest httpServletRequest)  {
+        var modelAndView = new ModelAndView("sell/sell-search");
+        modelAndView.addObject(vendaFilter);
+        modelAndView.addObject("statusVendaValues", StatusVenda.values());
+
+        PageWrapper<Venda> wrapperPage = new PageWrapper<>( vendaRepository.filtrar(vendaFilter, pageable), httpServletRequest );
+        modelAndView.addObject("wrapperPage", wrapperPage);
+        return modelAndView;
+
     }
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html
+  lang="pt-br"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="https://www.thymeleaf.org"
+>
+  <th:block th:fragment="carousel-pagination(wrapperPage)">
+    <div
+      class="col-sm-12 text-center"
+      th:if="${not wrapperPage.page.content.isEmpty()}"
+    >
+      <ul
+        class="pagination pagination-sm"
+        th:with="curretPage=${wrapperPage.getPage().number}"
+      >
+        <li th:classappend="${wrapperPage.page.isFirst()} ? disabled">
+          <a
+            th:href="${wrapperPage.urlResolverTo(curretPage - 1)}"
+            th:remove="${wrapperPage.page.isFirst()} ? tag"
+          >
+            <span>&laquo;</span>
+          </a>
+        </li>
+
+        <th:block
+          th:each="p : ${#numbers.sequence(1, wrapperPage.page.totalPages)}"
+          th:with="pageNumber=${p - 1}"
+        >
+          <li th:classappend="${pageNumber == curretPage} ? active">
+            <a th:href="${wrapperPage.urlResolverTo(pageNumber)}">[[${p}]]</a>
+          </li>
+        </th:block>
+        <th:block th:if="${wrapperPage.page.totalPages} == 1">
+          <li>
+            <a th:href="${wrapperPage.urlResolverTo(1)}">2</a>
+          </li>
+        </th:block>
+
+        <li th:classappend="${wrapperPage.page.isLast()} ? disable">
+          <a
+            th:href="${wrapperPage.urlResolverTo(curretPage + 1)}"
+            th:remove="${wrapperPage.page.isLast()} ? tag"
+          >
+            <span>&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </th:block>
+</html>

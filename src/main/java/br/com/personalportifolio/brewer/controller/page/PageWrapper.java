@@ -49,7 +49,6 @@ public class PageWrapper<T> {
 
         if (order != null) {
             direction = Sort.Direction.ASC.equals(order.getDirection()) ? "DESC" : "ASC";
-            System.out.println("before >> " + direction);
         }
         System.out.println("after >> " + direction);
         return direction;

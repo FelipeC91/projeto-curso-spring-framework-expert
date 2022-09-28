@@ -53,7 +53,7 @@ public class CervejaCustomRepositoryImpl implements CervejaCustomQueries {
         if (sort != null && sort.iterator().hasNext()) {
                 Sort.Order order = sort.iterator().next();
                 var field = order.getProperty();
-                criteriaQuery.where(predicates).orderBy( order.isAscending() ? builder.asc( root.get(field) ) : builder.desc( root.get(field) ) );
+                criteriaQuery.where(predicates).orderBy(order.isAscending() ? builder.asc( root.get(field) ) : builder.desc( root.get(field) ) );
 
         }
 
